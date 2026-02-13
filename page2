@@ -2,64 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Chaos! 🎉</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <title>The Celebration</title>
     <style>
-        body { margin: 0; background: #fdf0f3; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; }
-        .popup-wish {
-            position: absolute; padding: 15px 25px; background: white; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center;
-            gap: 10px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            z-index: 10; border-left: 5px solid #ff4d6d; pointer-events: none; transition: 1s ease-in-out;
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Outfit', sans-serif; }
+        .wish { position: absolute; color: white; white-space: nowrap; font-size: 1.2rem; pointer-events: none; transition: 0.1s linear; opacity: 0.7; }
+        #portal { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 140px; height: 140px; background: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; cursor: pointer; 
+            mix-blend-mode: difference; z-index: 100; font-weight: bold; text-align: center;
+            box-shadow: 0 0 50px rgba(255,255,255,0.5); font-size: 0.9rem;
         }
-        @keyframes popIn { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-        .main-title { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; color: #ff4d6d; text-align: center; z-index: 5; opacity: 0.2; pointer-events: none; }
-        
-        /* Portal Styling */
-        .portal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            width: 120px; height: 120px; background: radial-gradient(circle, #ffb703, #ff4d6d, transparent);
-            border-radius: 50%; z-index: 1000; cursor: pointer; box-shadow: 0 0 50px #ff4d6d;
-            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; 
-            justify-content: center; align-items: center; color: white; font-weight: bold; text-align: center; font-size: 0.8rem;
-        }
-        .suck-in { transform: translate(-50%, -50%) scale(0) !important; opacity: 0 !important; left: 50% !important; top: 50% !important; }
     </style>
 </head>
 <body>
-    <div class="main-title">IT'S YOUR DAY!</div>
-    <div id="portal" class="portal">CLICK TO<br>PROMISE</div>
-
+    <div id="portal">CLICK FOR<br>MY VOW</div>
     <script>
-        const wishes = ["You are a Star! ⭐", "Have the best day! 🎉", "Love you loads! 💖", "Cake Time! 🍰", "Make a wish! 🌠", "Stay beautiful! 🌸", "Smile! 😊", "Hugs! 💋"];
-        let count = 0;
-
-        const interval = setInterval(() => {
-            if(count > 40) {
-                clearInterval(interval);
-                showPortal();
-                return;
-            }
-            const card = document.createElement('div');
-            card.className = 'popup-wish';
-            card.innerHTML = `<span>🎈</span> ${wishes[Math.floor(Math.random() * wishes.length)]}`;
-            card.style.left = Math.random() * (window.innerWidth - 200) + 'px';
-            card.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-            document.body.appendChild(card);
-            count++;
-        }, 200);
-
-        function showPortal() {
-            const p = document.getElementById('portal');
-            p.style.transform = "translate(-50%, -50%) scale(1)";
-            p.onclick = () => {
-                document.querySelectorAll('.popup-wish').forEach(w => w.classList.add('suck-in'));
-                p.style.transform = "translate(-50%, -50%) scale(30)";
-                p.style.opacity = "0";
-                setTimeout(() => window.location.href = "page3.html", 800);
-            };
+        const texts = ["Happy Birthday! 🎂", "My Constant 💖", "Best Decision 💎", "30/10/22 ✨", "Infinite Love ♾️", "Unforgettable 🌹", "You are the Best 🥇", "Cake for you! 🍰"];
+        const elements = [];
+        
+        for(let i=0; i<50; i++) {
+            const el = document.createElement('div');
+            el.className = 'wish';
+            el.innerText = texts[Math.floor(Math.random()*texts.length)];
+            let x = Math.random() * window.innerWidth;
+            let y = Math.random() * window.innerHeight;
+            el.style.left = x + 'px'; el.style.top = y + 'px';
+            document.body.appendChild(el);
+            elements.push({el, x, y, currX: x, currY: y});
         }
+
+        window.addEventListener('mousemove', (e) => {
+            elements.forEach(p => {
+                let dx = e.x - p.currX;
+                let dy = e.y - p.currY;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 150) {
+                    p.currX -= dx * 0.1;
+                    p.currY -= dy * 0.1;
+                }
+                p.el.style.left = p.currX + 'px';
+                p.el.style.top = p.currY + 'px';
+            });
+        });
+
+        document.getElementById('portal').onclick = () => {
+            document.body.style.transition = "1.5s";
+            document.body.style.background = "white";
+            setTimeout(() => window.location.href="page3.html", 800);
+        };
     </script>
 </body>
 </html>
