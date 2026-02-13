@@ -2,50 +2,195 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Constant | Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Outfit:wght@300&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Infinite Promise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@200;400;600&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; height: 100vh; background: #020617; display: flex; justify-content: center; align-items: center; font-family: 'Outfit', sans-serif; color: #94a3b8; overflow: hidden; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 1; }
-        .login-card { position: relative; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); padding: 50px; border-radius: 40px; border: 1px solid rgba(56, 189, 248, 0.2); text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
-        h1 { color: white; letter-spacing: 5px; font-size: 1.5rem; margin-bottom: 5px; }
-        input { background: transparent; border: none; border-bottom: 2px solid #38bdf8; color: #fff; font-size: 1.5rem; text-align: center; padding: 10px; outline: none; font-family: 'Space Mono', monospace; width: 250px; margin: 20px 0; }
-        .btn { background: #38bdf8; color: #020617; border: none; padding: 15px 40px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        :root {
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --accent-pink: #f472b6;
+            --bg-dark: #020617;
+        }
+
+        body {
+            margin: 0; padding: 0; background: var(--bg-dark);
+            color: white; font-family: 'Outfit', sans-serif;
+            height: 100vh; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+        .glass-card {
+            position: relative; z-index: 10;
+            padding: 3rem; width: 85%; max-width: 600px;
+            background: rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        /* Page 1 Specifics */
+        .login-card h1 { font-family: 'Space Mono', monospace; letter-spacing: 5px; font-size: 1.5rem; }
+        input { background: transparent; border: none; border-bottom: 2px solid #38bdf8; color: #fff; font-size: 1.5rem; text-align: center; padding: 10px; outline: none; font-family: 'Space Mono', monospace; width: 80%; margin: 20px 0; }
+        
+        /* Page 2 Specifics */
+        #portal { 
+            width: 150px; height: 150px; background: white; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; cursor: pointer; 
+            mix-blend-mode: difference; font-weight: bold; margin: 0 auto;
+            box-shadow: 0 0 50px rgba(255,255,255,0.4); font-size: 0.9rem; color: #000;
+        }
+        .wish { position: absolute; color: white; white-space: nowrap; font-size: 1.1rem; pointer-events: none; opacity: 0.6; z-index: 5; }
+
+        /* Page 3 Specifics */
+        h1.vow-title { font-family: 'Dancing Script', cursive; font-size: 4rem; color: #38bdf8; margin: 0; text-shadow: 0 0 20px var(--primary-glow); }
+        .message-area { font-size: 1.3rem; line-height: 1.7; color: #cbd5e1; margin-top: 20px; min-height: 100px; }
+        .highlight { color: var(--accent-pink); font-weight: 600; text-shadow: 0 0 10px rgba(244, 114, 182, 0.5); }
+
+        .btn { background: #38bdf8; color: #020617; border: none; padding: 15px 40px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px; margin-top: 10px; }
         .btn:hover { box-shadow: 0 0 30px #38bdf8; transform: scale(1.05); }
+        .hidden { opacity: 0; transform: translateY(30px); pointer-events: none; display: none; }
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <div class="login-card">
+
+    <canvas id="mainCanvas"></canvas>
+
+    <div id="page1" class="glass-card">
         <h1>INITIATE_SESSION</h1>
         <p>Unlock the timeline: DD/MM/YYYY</p>
         <input type="text" id="pass" placeholder="00/00/0000">
-        <br><button class="btn" onclick="verify()">ACCESS</button>
+        <br><button class="btn" onclick="goToPage2()">ACCESS</button>
+    </div>
+
+    <div id="page2" class="glass-card hidden">
+        <div id="portal">CLICK FOR<br>MY VOW</div>
+        <p style="margin-top: 20px; opacity: 0.5;">Hover to move the memories...</p>
+    </div>
+
+    <div id="page3" class="glass-card hidden">
+        <h1 class="vow-title">To the Moon...</h1>
+        <div class="message-area" id="typedText"></div>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particles = [];
-        
-        class Particle {
-            constructor(x, y) { this.x = x; this.y = y; this.text = Math.random() > 0.5 ? "30" : "10"; this.speed = Math.random() * 3 + 1; this.opacity = 1; }
-            draw() { ctx.fillStyle = `rgba(56, 189, 248, ${this.opacity})`; ctx.font = "12px Space Mono"; ctx.fillText(this.text, this.x, this.y); }
-            update() { this.y += this.speed; this.opacity -= 0.01; }
+        let width, height, stars = [], particles = [], wishes = [];
+        let currentPage = 1;
+
+        const wishTexts = ["Happy Birthday! 🎂", "My Constant 💖", "Best Decision 💎", "30/10/22 ✨", "Infinite Love ♾️", "Unforgettable 🌹", "You are the Best 🥇", "Cake for you! 🍰"];
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = Array.from({length: 200}, () => ({
+                x: Math.random() * width, y: Math.random() * height,
+                size: Math.random() * 2, opacity: Math.random(),
+                speed: Math.random() * 0.005 + 0.002
+            }));
         }
 
+        function draw() {
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Draw Background Stars
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed *= -1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Draw Mouse Particles (Page 1 Style)
+            particles.forEach((p, i) => {
+                p.y += p.speed; p.opacity -= 0.01;
+                ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
+                ctx.font = "12px Space Mono";
+                ctx.fillText(p.text, p.x, p.y);
+                if(p.opacity <= 0) particles.splice(i, 1);
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        // Logic for Page 1 Particles
         window.addEventListener('mousemove', (e) => {
-            for(let i=0; i<3; i++) particles.push(new Particle(e.x + (Math.random()*60-30), e.y));
+            if(currentPage === 1) {
+                for(let i=0; i<2; i++) particles.push({ x: e.x + (Math.random()*40-20), y: e.y, text: Math.random() > 0.5 ? "30" : "10", speed: Math.random() * 2 + 1, opacity: 1 });
+            }
+            if(currentPage === 2) {
+                wishes.forEach(p => {
+                    let dx = e.x - p.currX; let dy = e.y - p.currY;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 150) { p.currX -= dx * 0.1; p.currY -= dy * 0.1; }
+                    p.el.style.left = p.currX + 'px'; p.el.style.top = p.currY + 'px';
+                });
+            }
         });
 
-        function animate() {
-            ctx.fillStyle = 'rgba(2, 6, 23, 0.2)'; ctx.fillRect(0,0,canvas.width, canvas.height);
-            particles.forEach((p, i) => { p.update(); p.draw(); if(p.opacity <= 0) particles.splice(i, 1); });
-            requestAnimationFrame(animate);
+        function goToPage2() {
+            if(document.getElementById('pass').value === "30/10/2022") {
+                currentPage = 2;
+                document.getElementById('page1').classList.add('hidden');
+                setTimeout(() => {
+                    document.getElementById('page1').style.display = 'none';
+                    document.getElementById('page2').style.display = 'block';
+                    setTimeout(() => document.getElementById('page2').classList.remove('hidden'), 50);
+                    createWishes();
+                }, 1000);
+            } else { alert("Date Incorrect. Hint: Late Oct 2022"); }
         }
-        animate();
-        function verify() { if(document.getElementById('pass').value === "30/10/2022") window.location.href="page2.html"; else alert("Date Incorrect. Hint: Late Oct 2022"); }
+
+        function createWishes() {
+            for(let i=0; i<30; i++) {
+                const el = document.createElement('div');
+                el.className = 'wish';
+                el.innerText = wishTexts[Math.floor(Math.random()*wishTexts.length)];
+                let x = Math.random() * (width - 100); let y = Math.random() * (height - 50);
+                el.style.left = x + 'px'; el.style.top = y + 'px';
+                document.body.appendChild(el);
+                wishes.push({el, x, y, currX: x, currY: y});
+            }
+        }
+
+        document.getElementById('portal').onclick = () => {
+            currentPage = 3;
+            document.querySelectorAll('.wish').forEach(w => w.style.opacity = '0');
+            document.getElementById('page2').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('page3').classList.remove('hidden');
+                    typeWriter();
+                }, 50);
+            }, 1000);
+        };
+
+        function typeWriter() {
+            const message = "I know I'm missing this birthday celebration right now, and it's the hardest part of my day. But here is my vow: The birthday we finally celebrate together will rewrite every memory. I promise you, it will be unforgettable. ✨";
+            let index = 0;
+            const target = document.getElementById("typedText");
+            function type() {
+                if (index < message.length) {
+                    if (message.substring(index, index + 8) === "together") {
+                        target.innerHTML += '<span class="highlight">together</span>'; index += 8;
+                    } else if (message.substring(index, index + 13) === "unforgettable") {
+                        target.innerHTML += '<span class="highlight">unforgettable</span>'; index += 13;
+                    } else { target.innerHTML += message.charAt(index); index++; }
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        init(); draw();
     </script>
 </body>
 </html>
