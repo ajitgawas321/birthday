@@ -3,58 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SURPRISE! 🎂</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <title>My Promise 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; height: 100vh; background: #0d1b2a; overflow: hidden; display: flex; justify-content: center; align-items: center; text-align: center; font-family: 'Poppins', sans-serif; }
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; justify-content: center; align-items: center; z-index: 100; transition: 0.5s; }
-        #preloader h2 { color: #ff4d6d; font-size: 1.8rem; padding: 20px; }
-        
-        #main-content { display: none; flex-direction: column; align-items: center; }
-        .bday-title { font-family: 'Dancing Script', cursive; font-size: 5rem; color: white; display: flex; gap: 10px; }
-        .bday-title span { display: inline-block; animation: wave 1.5s infinite; animation-delay: calc(0.1s * var(--i)); }
-        @keyframes wave { 0%, 100% { transform: translateY(0); color: white; } 50% { transform: translateY(-20px); color: #ffb703; } }
-        
-        .sub-text { color: #00f5d4; font-size: 1.5rem; margin-top: 20px; text-shadow: 0 0 10px #00f5d4; }
-        .emoji { position: absolute; top: -50px; animation: fall linear forwards; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        body { margin: 0; height: 100vh; background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%); display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; overflow: hidden; color: white; text-align: center; }
+        .container { max-width: 80%; z-index: 10; }
+        h2 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #ffb703; margin-bottom: 20px; animation: fadeIn 2s forwards; }
+        p { font-size: 1.2rem; line-height: 1.8; color: #e0e1dd; opacity: 0; animation: fadeIn 2s forwards 1s; }
+        .highlight { color: #ff4d6d; font-weight: 600; text-shadow: 0 0 10px #ff4d6d; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--d) infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
-
-    <div id="preloader">
-        <h2>hoo hooo mahitye ahe tuza birthday Pan ahe 😉🎂</h2>
-    </div>
-
-    <div id="main-content">
-        <div class="bday-title">
-            <span style="--i:1">H</span><span style="--i:2">a</span><span style="--i:3">p</span><span style="--i:4">p</span><span style="--i:5">y</span>
-            <span>&nbsp;</span>
-            <span style="--i:6">B</span><span style="--i:7">i</span><span style="--i:8">r</span><span style="--i:9">t</span><span style="--i:10">h</span><span style="--i:11">d</span><span style="--i:12">a</span><span style="--i:13">y</span><span style="--i:14">!</span>
-        </div>
-        <div class="sub-text">Many Many Happy Returns of the Day! 🍰✨</div>
+    <div class="container">
+        <h2>I know...</h2>
+        <p>I am missing your birthday today, and it's the hardest part of my day. 🥺</p>
+        <p style="font-size: 1.6rem; margin-top: 20px;">
+            But I promise you this:<br>
+            The birthday we celebrate <span class="highlight">together</span><br> 
+            will be <span class="highlight">unforgettable</span>. ✨
+        </p>
     </div>
 
     <script>
-        setTimeout(() => {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
-                document.getElementById('main-content').style.display = 'flex';
-                setInterval(createEmoji, 150);
-            }, 500);
-        }, 3000);
-
-        function createEmoji() {
-            const emojis = ['🎂', '🎈', '🎉', '💖', '🥳', '✨'];
-            const e = document.createElement('div');
-            e.className = 'emoji';
-            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            e.style.left = Math.random() * 100 + 'vw';
-            e.style.fontSize = Math.random() * 20 + 20 + 'px';
-            e.style.animationDuration = Math.random() * 2 + 3 + 's';
-            document.body.appendChild(e);
-            setTimeout(() => e.remove(), 5000);
+        for (let i = 0; i < 150; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.setProperty('--d', Math.random() * 3 + 2 + 's');
+            document.body.appendChild(s);
         }
     </script>
 </body>
