@@ -3,41 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Promise 🌙</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>My Promise to You 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; height: 100vh; background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%); display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; overflow: hidden; color: white; text-align: center; }
-        .container { max-width: 80%; z-index: 10; }
-        h2 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #ffb703; margin-bottom: 20px; animation: fadeIn 2s forwards; }
-        p { font-size: 1.2rem; line-height: 1.8; color: #e0e1dd; opacity: 0; animation: fadeIn 2s forwards 1s; }
-        .highlight { color: #ff4d6d; font-weight: 600; text-shadow: 0 0 10px #ff4d6d; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--d) infinite; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        body {
+            margin: 0; height: 100vh; background: #020617;
+            display: flex; justify-content: center; align-items: center;
+            color: white; text-align: center; overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+
+        .content {
+            position: relative; z-index: 10; padding: 20px;
+            background: rgba(2, 6, 23, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem; color: #38bdf8;
+            margin: 0; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+        }
+
+        .typewriter {
+            font-size: 1.4rem; line-height: 1.6; color: #cbd5e1;
+            margin-top: 20px; min-height: 100px;
+        }
+
+        .highlight {
+            color: #f472b6; font-weight: 600;
+            text-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
+        }
+
+        /* Floating particles for a magical feel */
+        .sparkle {
+            position: absolute; background: white; border-radius: 50%;
+            pointer-events: none; opacity: 0.5;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>I know...</h2>
-        <p>I am missing your birthday today, and it's the hardest part of my day. 🥺</p>
-        <p style="font-size: 1.6rem; margin-top: 20px;">
-            But I promise you this:<br>
-            The birthday we celebrate <span class="highlight">together</span><br> 
-            will be <span class="highlight">unforgettable</span>. ✨
-        </p>
+
+    <canvas id="nebulaCanvas"></canvas>
+
+    <div class="content">
+        <h1 id="title">To the Moon...</h1>
+        <div class="typewriter" id="typedText"></div>
     </div>
 
     <script>
-        for (let i = 0; i < 150; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            const size = Math.random() * 3 + 'px';
-            s.style.width = size; s.style.height = size;
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.setProperty('--d', Math.random() * 3 + 2 + 's');
-            document.body.appendChild(s);
+        // --- 1. THE NEBULA BACKGROUND ---
+        const canvas = document.getElementById('nebulaCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let stars = [];
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                opacity: Math.random(),
+                speed: Math.random() * 0.005 + 0.002
+            });
         }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed *= -1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        // --- 2. THE TYPEWRITER MESSAGE ---
+        const message = "I know I'm missing this birthday celebration right now, and it's the hardest part of my day. But here is my vow: The birthday we finally celebrate together will rewrite every memory. I promise you, it will be unforgettable. ✨";
+        let index = 0;
+        const speed = 50; // Speed of typing in ms
+
+        function typeWriter() {
+            if (index < message.length) {
+                let char = message.charAt(index);
+                // Custom highlighting for specific words
+                if (message.substring(index, index + 8) === "together") {
+                    document.getElementById("typedText").innerHTML += '<span class="highlight">together</span>';
+                    index += 8;
+                } else if (message.substring(index, index + 13) === "unforgettable") {
+                    document.getElementById("typedText").innerHTML += '<span class="highlight">unforgettable</span>';
+                    index += 13;
+                } else {
+                    document.getElementById("typedText").innerHTML += char;
+                    index++;
+                }
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // Start typing after a short delay
+        setTimeout(typeWriter, 1000);
     </script>
 </body>
 </html>
