@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>The Constant</title>
+    <meta charset="UTF-8">
+    <title>The Constant | Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Outfit:wght@300&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; height: 100vh; background: #020617; display: flex; justify-content: center; align-items: center; font-family: 'Outfit', sans-serif; color: #94a3b8; overflow: hidden; }
-        #canvas { position: absolute; top: 0; left: 0; z-index: 1; }
-        .login-card { position: relative; z-index: 10; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.5); }
+        canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+        .login-card { position: relative; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); padding: 50px; border-radius: 40px; border: 1px solid rgba(56, 189, 248, 0.2); text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
+        h1 { color: white; letter-spacing: 5px; font-size: 1.5rem; margin-bottom: 5px; }
         input { background: transparent; border: none; border-bottom: 2px solid #38bdf8; color: #fff; font-size: 1.5rem; text-align: center; padding: 10px; outline: none; font-family: 'Space Mono', monospace; width: 250px; margin: 20px 0; }
         .btn { background: #38bdf8; color: #020617; border: none; padding: 15px 40px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
         .btn:hover { box-shadow: 0 0 30px #38bdf8; transform: scale(1.05); }
@@ -15,9 +17,9 @@
 <body>
     <canvas id="canvas"></canvas>
     <div class="login-card">
-        <h1 style="color:white; margin:0;">INITIATE_SESSION</h1>
-        <p>Unlock the timeline using our origin date.</p>
-        <input type="text" id="pass" placeholder="DD/MM/YYYY">
+        <h1>INITIATE_SESSION</h1>
+        <p>Unlock the timeline: DD/MM/YYYY</p>
+        <input type="text" id="pass" placeholder="00/00/0000">
         <br><button class="btn" onclick="verify()">ACCESS</button>
     </div>
 
@@ -29,12 +31,12 @@
         
         class Particle {
             constructor(x, y) { this.x = x; this.y = y; this.text = Math.random() > 0.5 ? "30" : "10"; this.speed = Math.random() * 3 + 1; this.opacity = 1; }
-            draw() { ctx.fillStyle = `rgba(56, 189, 248, ${this.opacity})`; ctx.fillText(this.text, this.x, this.y); }
+            draw() { ctx.fillStyle = `rgba(56, 189, 248, ${this.opacity})`; ctx.font = "12px Space Mono"; ctx.fillText(this.text, this.x, this.y); }
             update() { this.y += this.speed; this.opacity -= 0.01; }
         }
 
         window.addEventListener('mousemove', (e) => {
-            for(let i=0; i<2; i++) particles.push(new Particle(e.x + (Math.random()*50-25), e.y));
+            for(let i=0; i<3; i++) particles.push(new Particle(e.x + (Math.random()*60-30), e.y));
         });
 
         function animate() {
@@ -43,7 +45,7 @@
             requestAnimationFrame(animate);
         }
         animate();
-        function verify() { if(document.getElementById('pass').value === "30/10/2022") window.location.href="page2.html"; }
+        function verify() { if(document.getElementById('pass').value === "30/10/2022") window.location.href="page2.html"; else alert("Date Incorrect. Hint: Late Oct 2022"); }
     </script>
 </body>
 </html>
