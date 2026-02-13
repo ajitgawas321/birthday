@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check! 🔐</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: 'Poppins', sans-serif; background: #ffe5ec; overflow: hidden;
+        }
+        .quiz-card {
+            background: white; padding: 40px; border-radius: 25px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 85%; max-width: 400px;
+        }
+        h2 { color: #ff4d6d; margin-bottom: 20px; font-size: 1.5rem; }
+        .btn-container { position: relative; height: 200px; margin-top: 20px; }
+        .btn {
+            padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer;
+            font-weight: 600; font-size: 1rem; position: absolute; transition: 0.3s;
+        }
+        #correctBtn { background: #ff4d6d; color: white; left: 10%; top: 40%; }
+        #wrongBtn { background: #8d99ae; color: white; right: 10%; top: 40%; }
+        #hint { color: #c9184a; margin-top: 15px; font-weight: 600; height: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-card">
+        <h2 id="question">Who is the most annoying but cutest person in my life? 🤨</h2>
+        <div class="btn-container" id="box">
+            <button id="correctBtn" class="btn">Me (Obviously)</button>
+            <button id="wrongBtn" class="btn">Someone else</button>
+        </div>
+        <div id="hint"></div>
+    </div>
+
+    <script>
+        const wrongBtn = document.getElementById('wrongBtn');
+        const correctBtn = document.getElementById('correctBtn');
+        const hint = document.getElementById('hint');
+        const box = document.getElementById('box');
+
+        // The "Wrong" button runs away and shows your Marathi message
+        wrongBtn.addEventListener('mouseover', moveButton);
+        wrongBtn.addEventListener('click', () => {
+            hint.innerHTML = "No ka g mhantes 😭";
+        });
+
+        function moveButton() {
+            const x = Math.random() * (box.clientWidth - wrongBtn.clientWidth);
+            const y = Math.random() * (box.clientHeight - wrongBtn.clientHeight);
+            wrongBtn.style.left = x + 'px';
+            wrongBtn.style.top = y + 'px';
+        }
+
+        correctBtn.addEventListener('click', () => {
+            window.location.href = "page2.html";
+        });
+    </script>
+</body>
+</html>
