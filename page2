@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correct Answer! 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; background: #fff0f3; font-family: 'Poppins', sans-serif;
+            display: flex; flex-direction: column; align-items: center; padding: 40px 20px;
+        }
+        h1 { font-family: 'Dancing Script', cursive; color: #ff4d6d; font-size: 3rem; }
+        .video-box {
+            width: 100%; max-width: 500px; aspect-ratio: 16/9; border-radius: 20px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 20px 0;
+        }
+        .gift-container { cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        .gift-container:hover { transform: scale(1.1); }
+        .gift-box { font-size: 80px; }
+        .tap-text { color: #c9184a; font-weight: 600; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    </style>
+</head>
+<body>
+
+    <h1>Yayyy!!! 💖</h1>
+    <p>Best decision everr 😌</p>
+
+    <div class="video-box">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/5AmHMSEY6kg?autoplay=1" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="gift-container" onclick="location.href='page3.html'">
+        <div class="gift-box">🎁</div>
+        <p class="tap-text">Tap to open your surprise!</p>
+    </div>
+
+</body>
+</html>
