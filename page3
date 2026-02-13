@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SURPRISE! 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; height: 100vh; background: #0d1b2a; overflow: hidden; display: flex; justify-content: center; align-items: center; text-align: center; font-family: 'Poppins', sans-serif; }
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; justify-content: center; align-items: center; z-index: 100; transition: 0.5s; }
+        #preloader h2 { color: #ff4d6d; font-size: 1.8rem; padding: 20px; }
+        
+        #main-content { display: none; flex-direction: column; align-items: center; }
+        .bday-title { font-family: 'Dancing Script', cursive; font-size: 5rem; color: white; display: flex; gap: 10px; }
+        .bday-title span { display: inline-block; animation: wave 1.5s infinite; animation-delay: calc(0.1s * var(--i)); }
+        @keyframes wave { 0%, 100% { transform: translateY(0); color: white; } 50% { transform: translateY(-20px); color: #ffb703; } }
+        
+        .sub-text { color: #00f5d4; font-size: 1.5rem; margin-top: 20px; text-shadow: 0 0 10px #00f5d4; }
+        .emoji { position: absolute; top: -50px; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <h2>hoo hooo mahitye ahe tuza birthday Pan ahe 😉🎂</h2>
+    </div>
+
+    <div id="main-content">
+        <div class="bday-title">
+            <span style="--i:1">H</span><span style="--i:2">a</span><span style="--i:3">p</span><span style="--i:4">p</span><span style="--i:5">y</span>
+            <span>&nbsp;</span>
+            <span style="--i:6">B</span><span style="--i:7">i</span><span style="--i:8">r</span><span style="--i:9">t</span><span style="--i:10">h</span><span style="--i:11">d</span><span style="--i:12">a</span><span style="--i:13">y</span><span style="--i:14">!</span>
+        </div>
+        <div class="sub-text">Many Many Happy Returns of the Day! 🍰✨</div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+                document.getElementById('main-content').style.display = 'flex';
+                setInterval(createEmoji, 150);
+            }, 500);
+        }, 3000);
+
+        function createEmoji() {
+            const emojis = ['🎂', '🎈', '🎉', '💖', '🥳', '✨'];
+            const e = document.createElement('div');
+            e.className = 'emoji';
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.fontSize = Math.random() * 20 + 20 + 'px';
+            e.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
